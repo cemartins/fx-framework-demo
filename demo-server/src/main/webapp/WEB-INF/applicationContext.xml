@@ -8,7 +8,11 @@
 		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
    <context:property-placeholder location="classpath:persistence-hsqldb.properties" />
-
+   <context:property-placeholder location="classpath:application.properties" />
+   
+   <context:annotation-config />
+   <context:component-scan base-package="org.juffrou.fx.business" />
+   
    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
       <property name="dataSource" ref="dataSource" />
       <property name="packagesToScan" value="org.baeldung.spring.persistence.model" />
