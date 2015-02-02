@@ -10,8 +10,11 @@ import javafx.stage.Stage;
 
 import org.juffrou.fx.business.pm.PersonPM;
 import org.juffrou.fx.core.LifecycleController;
+import org.springframework.context.ApplicationContext;
 
 public class MainController {
+	
+	private ApplicationContext applicationContext;
 	
 	@FXML
 	private void open() throws IOException {
@@ -24,7 +27,7 @@ public class MainController {
 		Parent beanLifecycleNode = loader.load();
 		LifecycleController fifecycleController = (LifecycleController) loader.getController();
 		
-		PersonPM personPM = new PersonPM();
+		PersonPM personPM = applicationContext.getBean(PersonPM.class);
 
 		fifecycleController.setNode(personPM.getNode());
 		fifecycleController.setPresentationManager(personPM);
@@ -35,4 +38,12 @@ public class MainController {
 
 	}
 
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
+	
 }

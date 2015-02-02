@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 
+import org.juffrou.fx.business.bll.PersonManager;
 import org.juffrou.fx.business.ctrl.ContactTableController;
 import org.juffrou.fx.business.ctrl.PersonController;
 import org.juffrou.fx.business.dom.Contact;
@@ -15,8 +16,17 @@ import org.juffrou.fx.controller.BeanController;
 import org.juffrou.fx.controller.ControllerFactory;
 import org.juffrou.fx.core.LifecyclePresentationManager;
 import org.juffrou.fx.error.NodeBuildingException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class PersonPM implements LifecyclePresentationManager {
+	
+	@Autowired
+	private PersonManager personManager;
 	
 	private BeanController<Person> personController;
 	private ContactTableController contactController;

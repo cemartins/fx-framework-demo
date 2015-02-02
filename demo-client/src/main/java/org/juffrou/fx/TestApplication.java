@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javafx.application.Application;
@@ -28,6 +29,7 @@ public class TestApplication extends Application {
     private ApplicationContext context = null;
 	
 	public static void main(String[] args) {
+		
 		launch(args);
 	}
 
@@ -35,7 +37,12 @@ public class TestApplication extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		
 		URL url = getClass().getResource("/org/juffrou/fx/Main.fxml");
-		Parent parent = FXMLLoader.load(url);
+		
+		FXMLLoader loader = new FXMLLoader(url);
+		Parent parent = loader.load();
+		
+		MainController mainController = loader.getController();
+		mainController.setApplicationContext(context);
 		
 		Scene scene = new Scene( parent);
 		primaryStage.setScene(scene);
@@ -97,7 +104,7 @@ public class TestApplication extends Application {
 		}
 		
 		exportServerEndpointAddress();
-		context = new ClassPathXmlApplicationContext("business-sil.xml");
+		context = new ClassPathXmlApplicationContext("business-sil.xml", "business-pm.xml");
 
 	}
 
