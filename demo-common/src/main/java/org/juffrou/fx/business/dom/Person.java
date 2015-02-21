@@ -1,31 +1,37 @@
 package org.juffrou.fx.business.dom;
 
-import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.juffrou.fx.serials.FxSerials;
 
 @Entity
-public class Person implements Serializable {
-
-	private static final long serialVersionUID = -7969309518311916608L;
+@Table(name="Person")
+public class Person implements FxSerials {
 	
+	private static final long serialVersionUID = -6807947635627328530L;
+
 	@Id
 	@GeneratedValue
 	private Integer id;
-	
+
 	private String name;
-	
 	private String email;
-	
+
 	private LocalDate dateOfBirth;
+
+	@OneToMany(mappedBy = "person", fetch=FetchType.LAZY, orphanRemoval=true, cascade=CascadeType.ALL)
+	private Set<Contact> contacts;
 	
-	@ManyToOne(fetch= FetchType.LAZY)
-	private AudioCd favoriteCd;
 	
 	public Integer getId() {
 		return id;
@@ -39,7 +45,6 @@ public class Person implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 	public String getEmail() {
 		return email;
 	}
@@ -52,27 +57,21 @@ public class Person implements Serializable {
 	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
-	public String toString() {
-		return "name: " + name;
+	public Set<Contact> getContacts() {
+		return contacts;
 	}
-	
-	public AudioCd getFavoriteCd() {
-		return favoriteCd;
-	}
-	public void setFavoriteCd(AudioCd favoriteCd) {
-		this.favoriteCd = favoriteCd;
-	}
-	
-	public boolean equals(Object obj) {
-		if(obj == this)
-			return true;
-		if(obj == null || ! (obj instanceof Person))
-			return false;
-		Person audioCd = (Person) obj;
-		if(id != null)
-			return id.equals(audioCd.getId());
-		else
-			return false;
+	public void setContacts(Set<Contact> contacts) {
+		this.contacts = contacts;
 	}
 
+	public void addContact(Contact contact) {
+		if(contacts == null)
+			contacts = new HashSet<>();
+		contact.setPerson(this);
+		contacts.add(contact);
+	}
+	
+	public void removeContact(Contact contact) {
+		contacts.remove(contact);
+	}
 }

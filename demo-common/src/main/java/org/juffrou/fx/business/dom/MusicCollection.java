@@ -29,7 +29,7 @@ public class MusicCollection implements Serializable {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="person_id")
-	private Person owner;
+	private DiscoPerson owner;
 	
 	@OneToMany(mappedBy = "musicCollection", fetch=FetchType.LAZY, orphanRemoval=true, cascade=CascadeType.ALL)
     private Set<AudioCd> cdSet;
@@ -46,10 +46,10 @@ public class MusicCollection implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Person getOwner() {
+	public DiscoPerson getOwner() {
 		return owner;
 	}
-	public void setOwner(Person owner) {
+	public void setOwner(DiscoPerson owner) {
 		this.owner = owner;
 	}
 	public Set<AudioCd> getCdSet() {

@@ -6,17 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class TestApplication extends Application {
 	
@@ -24,7 +23,7 @@ public class TestApplication extends Application {
 
     private static final String SERVER_URL_PARAMETER="server-url";
     private static final String SERVICES_URL="SERVICES_URL";
-    private static final String SERVER_URL="http://localhost:8080/fx-framework-demo/remoting";
+    private static final String SERVER_URL="http://localhost:8080/fxframework-demo/remoting";
     
     private ApplicationContext context = null;
 	

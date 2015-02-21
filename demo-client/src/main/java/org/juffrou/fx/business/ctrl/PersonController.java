@@ -4,11 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
-import org.juffrou.fx.business.dom.Person;
+import org.juffrou.fx.business.dom.DiscoPerson;
 import org.juffrou.fx.controller.BeanController;
 import org.juffrou.fx.controller.model.BeanControllerModel;
 
-public class PersonController extends BeanController<Person> {
+public class PersonController extends BeanController<DiscoPerson> {
 	
 	public static String FXML_PATH = "/org/juffrou/fx/business/Person";
 	
@@ -22,10 +22,10 @@ public class PersonController extends BeanController<Person> {
 	private DatePicker dateOfBirth;
 	
 	public PersonController() {
-		super(Person.class);
+		super(DiscoPerson.class);
 	}
 
-	public void bindControllerModel(BeanControllerModel<Person> presentationModel) {
+	public void bindControllerModel(BeanControllerModel<DiscoPerson> presentationModel) {
 
 		presentationModel.readWriteBind(name.textProperty(), "name");
 		presentationModel.readonlyBind(email.textProperty(), "email");
