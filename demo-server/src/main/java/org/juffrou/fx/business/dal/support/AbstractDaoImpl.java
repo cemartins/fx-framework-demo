@@ -3,6 +3,9 @@ package org.juffrou.fx.business.dal.support;
 import java.io.Serializable;
 import java.util.List;
 
+import net.sf.juffrou.reflect.JuffrouBeanWrapper;
+
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -37,6 +40,17 @@ public abstract class AbstractDaoImpl<T> {
 	
 	public void delete(T domain) {
 		getCurrectSession().delete(domain);
+	}
+	
+	public T load(Serializable id, String ... propertiesToInitialize) {
+		T domain = (T) getCurrectSession().load(tClass, id);
+		if(propertiesToInitialize != null && propertiesToInitialize.length > 0) {
+			JuffrouBeanWrapper bw = new JuffrouBeanWrapper(domain);
+			for(String propertyToInitialize : propertiesToInitialize) {
+				Hibernate.initialize(bw.getValue(propertyToInitialize));
+			}
+		}
+		return domain;
 	}
 	
 	public T get(Serializable id) {

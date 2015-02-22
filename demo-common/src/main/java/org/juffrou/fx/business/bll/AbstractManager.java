@@ -10,6 +10,8 @@ public interface AbstractManager<T> {
 	public void update(T domain);
 	
 	public void delete(T domain);
+	
+	public T load(Serializable id, String...propertiesToInitialize);
 
 	public T get(Serializable id);
 	

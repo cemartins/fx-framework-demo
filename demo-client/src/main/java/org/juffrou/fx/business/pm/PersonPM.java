@@ -2,14 +2,21 @@ package org.juffrou.fx.business.pm;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import org.juffrou.fx.business.bll.PersonManager;
 import org.juffrou.fx.business.ctrl.ContactTableController;
 import org.juffrou.fx.business.ctrl.PersonController;
+import org.juffrou.fx.business.ctrl.PersonTableController;
 import org.juffrou.fx.business.dom.Contact;
 import org.juffrou.fx.business.dom.Person;
 import org.juffrou.fx.controller.BeanController;
@@ -28,13 +35,51 @@ public class PersonPM implements LifecyclePresentationManager {
 	@Autowired
 	private PersonManager personManager;
 	
+	private PersonTableController personTableController;
 	private BeanController<Person> personController;
 	private ContactTableController contactController;
+	
+	private StackPane rootPane;
+	private Node searchNode;
+	private Node itemNode;
 	
 	public PersonPM() {
 	}
 	
-	public Parent getNode() {
+	public void initialize() {
+		
+		rootPane = new StackPane();
+		
+		searchNode = getSearchNode();
+		searchNode.setVisible(false);
+		
+		itemNode = getPersonNode();
+		
+		rootPane.getChildren().addAll(searchNode, itemNode);
+	}
+	
+	public Node getRootNode() {
+		return rootPane;
+	}
+	
+	private Node getSearchNode() {
+		// load PersonTable
+		FXMLLoader loader = ControllerFactory.getLoader(PersonTableController.FXML_PATH);
+		
+		try {
+			
+			Parent searchNode = loader.load();
+			personTableController = (PersonTableController) loader.getController();
+			
+			personTableController.setLifecyclePresentationManager(this);
+			
+			return searchNode;
+		} catch (IOException e) {
+			throw new NodeBuildingException("Cannot load PersonTable.fxml", e);
+		}
+	}
+	
+	private Node getPersonNode() {
 		
 		try {
 			
@@ -62,12 +107,33 @@ public class PersonPM implements LifecyclePresentationManager {
 	}
 	
 	public void save() {
-		System.out.println("saving person");
 		Person person = personController.getControllerModel().getModelSource();
-		System.out.println("name: " + person.getName());
-		System.out.println("email: " + person.getEmail());
-		System.out.println("date of birth: " + person.getDateOfBirth());
-		System.out.println("Contacts: " + person.getContacts());
+		if(person.getId() == null)
+			personManager.save(person);
+		else
+			personManager.update(person);
+
+		System.out.println("saved person");
+	}
+	
+	public void search() {
+		System.out.println("Search...");
+		List<Person> list = personManager.get("from Person", null);
+		personTableController.getControllerModel().setModelSource(list);
+		itemNode.setVisible(false);
+		searchNode.setVisible(true);
+		System.out.println("Got " + list.size() + " guys");
+	}
+	
+	public void selectSearchItem(Object item) {
+		Person person = (Person) item;
+		
+		// initialize the contacts collection
+		person = personManager.load(person.getId(), "contacts");
+		
+		personController.getControllerModel().setModelSource(person);
+		searchNode.setVisible(false);
+		itemNode.setVisible(true);
 	}
 	
 	public void cancel() {
@@ -90,6 +156,10 @@ public class PersonPM implements LifecyclePresentationManager {
 		
 		personController.getControllerModel().setModelSource(person);
 
+	}
+	
+	public void displayItem(Object item) {
+		
 	}
 
 }

@@ -30,6 +30,11 @@ public abstract class AbstractManagerImpl<T> implements AbstractManager<T>{
 	public void delete(T domain) {
 		daoImpl.delete(domain);
 	}
+	
+	@Transactional(readOnly=true, isolation=Isolation.READ_COMMITTED, propagation=Propagation.REQUIRED)
+	public T load(Serializable id, String...propertiesToInitialize) {
+		return daoImpl.load(id, propertiesToInitialize);
+	}
 
 	@Transactional(readOnly=true, isolation=Isolation.READ_COMMITTED, propagation=Propagation.REQUIRED)
 	public T get(Serializable id) {

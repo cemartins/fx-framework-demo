@@ -12,7 +12,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem fx:id="miOpen" mnemonicParsing="false" onAction="#openPersonTable" text="Open" />
+                  <MenuItem fx:id="miOpen" mnemonicParsing="false" onAction="#open" text="Open" />
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>

@@ -31,6 +31,11 @@ public class LifecycleController {
 		System.out.println("cancel");
 		presentationManager.cancel();
 	}
+	
+	@FXML
+	private void search() {
+		presentationManager.search();
+	}
 
 	public LifecyclePresentationManager getPresentationManager() {
 		return presentationManager;
@@ -42,5 +47,9 @@ public class LifecycleController {
 
 	public void setNode(Node node) {
 		nodeContainer.getChildren().add(node);
+		nodeContainer.setTopAnchor(node, 0.0);
+		nodeContainer.setBottomAnchor(node, 0.0);
+		nodeContainer.setLeftAnchor(node, 0.0);
+		nodeContainer.setRightAnchor(node, 0.0);
 	}
 }

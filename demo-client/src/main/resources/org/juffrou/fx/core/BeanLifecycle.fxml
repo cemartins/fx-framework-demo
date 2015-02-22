@@ -11,8 +11,9 @@
       <AnchorPane fx:id="nodeContainer" prefHeight="401.0" prefWidth="581.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <ToolBar layoutX="14.0" layoutY="363.0" prefHeight="38.0" prefWidth="581.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <items>
-            <Button mnemonicParsing="false" onAction="#cancel" text="Cancel" />
+            <Button mnemonicParsing="false" onAction="#search" text="Search" />
             <Button mnemonicParsing="false" onAction="#save" text="Save" />
+            <Button mnemonicParsing="false" onAction="#cancel" text="Cancel" />
          </items>
       </ToolBar>
    </children>
