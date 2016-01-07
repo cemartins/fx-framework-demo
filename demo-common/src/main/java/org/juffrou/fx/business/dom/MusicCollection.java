@@ -1,8 +1,8 @@
 package org.juffrou.fx.business.dom;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -31,8 +31,8 @@ public class MusicCollection implements Serializable {
 	@JoinColumn(name="person_id")
 	private DiscoPerson owner;
 	
-	@OneToMany(mappedBy = "musicCollection", fetch=FetchType.LAZY, orphanRemoval=true, cascade=CascadeType.ALL)
-    private Set<AudioCd> cdSet;
+	@OneToMany(targetEntity = AudioCd.class, mappedBy = "musicCollection", fetch=FetchType.LAZY, orphanRemoval=true, cascade=CascadeType.ALL)
+    private List<AudioCd> cdSet;
     
 	public Integer getId() {
 		return id;
@@ -52,17 +52,17 @@ public class MusicCollection implements Serializable {
 	public void setOwner(DiscoPerson owner) {
 		this.owner = owner;
 	}
-	public Set<AudioCd> getCdSet() {
+	public List<AudioCd> getCdSet() {
 		return cdSet;
 	}
-	public void setCdSet(Set<AudioCd> cdSet) {
+	public void setCdSet(List<AudioCd> cdSet) {
 		this.cdSet = cdSet;
 	}
     public void addAudioCd(AudioCd audioCd) {
     	if(cdSet == null)
-    		cdSet = new HashSet<AudioCd>();
+    		setCdSet(new ArrayList<>());
     	audioCd.setMusicCollection(this);
-    	cdSet.add(audioCd);
+    	getCdSet().add(audioCd);
     }
     public void removeAudioCd(AudioCd audioCd) {
     	cdSet.remove(audioCd);

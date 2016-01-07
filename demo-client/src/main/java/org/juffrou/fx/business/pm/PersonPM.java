@@ -1,17 +1,10 @@
 package org.juffrou.fx.business.pm;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
-
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.juffrou.fx.business.bll.PersonManager;
 import org.juffrou.fx.business.ctrl.ContactTableController;
@@ -23,17 +16,28 @@ import org.juffrou.fx.controller.BeanController;
 import org.juffrou.fx.controller.ControllerFactory;
 import org.juffrou.fx.core.LifecyclePresentationManager;
 import org.juffrou.fx.error.NodeBuildingException;
+import org.juffrou.fx.serials.FxSerialsContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class PersonPM implements LifecyclePresentationManager {
+public class PersonPM implements LifecyclePresentationManager<Person> {
 	
 	@Autowired
 	private PersonManager personManager;
+	
+	private FxSerialsContext fxSerialsContext = new FxSerialsContext();
 	
 	private PersonTableController personTableController;
 	private BeanController<Person> personController;
@@ -96,7 +100,7 @@ public class PersonPM implements LifecyclePresentationManager {
 			loader = ControllerFactory.getLoader(ContactTableController.FXML_PATH);
 			parent = loader.load();
 			contactController = loader.getController();
-			personController.getControllerModel().controllerModelBind(contactController.getControllerModel(), "contacts");
+			personController.getBinder().addBidirectional(contactController.getControllerModel(), "contacts");
 
 			vbox.getChildren().add(parent);
 
@@ -107,34 +111,45 @@ public class PersonPM implements LifecyclePresentationManager {
 	}
 	
 	public void save() {
-		Person person = personController.getControllerModel().getModelSource();
-		if(person.getId() == null)
-			personManager.save(person);
+		Person person = getLifecycleModelSource();
+		Serializable id = person.getId();
+		if(id == null)
+			id = personManager.save(person);
 		else
 			personManager.update(person);
 
 		System.out.println("saved person");
+
+		person = personManager.load(id, "contacts");
+		setLifecycleModelSource(person);
 	}
 	
 	public void search() {
 		System.out.println("Search...");
-		List<Person> list = personManager.get("from Person", null);
+		ObservableList<Person> list = FXCollections.observableArrayList((Collection<Person>)personManager.get("from Person", null));
 		personTableController.getControllerModel().setModelSource(list);
 		itemNode.setVisible(false);
 		searchNode.setVisible(true);
 		System.out.println("Got " + list.size() + " guys");
 	}
 	
-	public void selectSearchItem(Object item) {
+	public void setSearchItem(Person item) {
 		Person person = (Person) item;
 		
 		// initialize the contacts collection
 		person = personManager.load(person.getId(), "contacts");
 		
-		personController.getControllerModel().setModelSource(person);
+		setLifecycleModelSource(person);
 		searchNode.setVisible(false);
 		itemNode.setVisible(true);
 	}
+	
+	public void setNewTransient() {
+		Person person = new Person();
+		person.setContacts(new ArrayList<Contact>());
+		setLifecycleModelSource(person);
+	}
+	
 	
 	public void cancel() {
 		System.out.println("loading person");
@@ -154,12 +169,29 @@ public class PersonPM implements LifecyclePresentationManager {
 		contact.setValue("916 173 239");
 		person.addContact(contact);
 		
-		personController.getControllerModel().setModelSource(person);
+		setLifecycleModelSource(person);
 
 	}
 	
-	public void displayItem(Object item) {
-		
+	@Override
+	public void createNewTransient() {
+		Person person = new Person();
+		setLifecycleModelSource(person);
+	}
+	
+	@Override
+	public void setLifecycleModelSource(Person sourceDomain) {
+		if(sourceDomain != null)
+			sourceDomain = fxSerialsContext.getProxy(sourceDomain);
+		personController.getControllerModel().setModelSource(sourceDomain);
+	}
+
+	@Override
+	public Person getLifecycleModelSource() {
+		Person person = personController.getControllerModel().getModelSource();
+		if(person != null)
+			person = (Person) fxSerialsContext.getOriginalBean(person);
+		return person;
 	}
 
 }

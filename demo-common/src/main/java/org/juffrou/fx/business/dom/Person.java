@@ -1,8 +1,8 @@
 package org.juffrou.fx.business.dom;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,11 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.juffrou.fx.serials.FxSerials;
+import org.juffrou.fx.serials.JFXSerializable;
 
 @Entity
 @Table(name="Person")
-public class Person implements FxSerials {
+public class Person implements JFXSerializable {
 	
 	private static final long serialVersionUID = -6807947635627328530L;
 
@@ -31,8 +31,8 @@ public class Person implements FxSerials {
 	@Column()
 	private LocalDate dateOfBirth;
 
-	@OneToMany(mappedBy = "person", fetch=FetchType.LAZY, orphanRemoval=true, cascade=CascadeType.ALL)
-	private Set<Contact> contacts;
+	@OneToMany(targetEntity = Contact.class, mappedBy = "person", fetch=FetchType.LAZY, orphanRemoval=true, cascade=CascadeType.ALL)
+	private List<Contact> contacts;
 	
 	
 	public Integer getId() {
@@ -59,21 +59,21 @@ public class Person implements FxSerials {
 	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
-	public Set<Contact> getContacts() {
+	public List<Contact> getContacts() {
 		return contacts;
 	}
-	public void setContacts(Set<Contact> contacts) {
+	public void setContacts(List<Contact> contacts) {
 		this.contacts = contacts;
 	}
 
 	public void addContact(Contact contact) {
 		if(contacts == null)
-			contacts = new HashSet<>();
+			setContacts(new ArrayList<>());
 		contact.setPerson(this);
-		contacts.add(contact);
+		getContacts().add(contact);
 	}
 	
 	public void removeContact(Contact contact) {
-		contacts.remove(contact);
+		getContacts().remove(contact);
 	}
 }

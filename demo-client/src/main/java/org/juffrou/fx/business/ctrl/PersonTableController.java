@@ -9,7 +9,7 @@ import javafx.scene.control.TableView;
 
 import org.juffrou.fx.business.dom.Person;
 import org.juffrou.fx.controller.TableController;
-import org.juffrou.fx.controller.model.TableControllerModel;
+import org.juffrou.fx.controller.model.ListControllerModel;
 import org.juffrou.fx.core.LifecyclePresentationManager;
 
 public class PersonTableController extends TableController<Person> {
@@ -27,7 +27,7 @@ public class PersonTableController extends TableController<Person> {
 	}
 	
 
-	public void bindControllerModel(TableControllerModel<Person> presentationModel) {
+	public void bindControllerModel(ListControllerModel<Person> presentationModel) {
 
 		table.setItems(getControllerModel().getModelSource());
 	}
@@ -42,7 +42,7 @@ public class PersonTableController extends TableController<Person> {
 		    row.setOnMouseClicked(event -> {
 		        if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
 						Person rowData = row.getItem();
-						lifecyclePresentationManager.selectSearchItem(rowData);
+						lifecyclePresentationManager.setSearchItem(rowData);
 		        }
 		    });
 		    return row ;

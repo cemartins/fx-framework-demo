@@ -1,11 +1,11 @@
 package org.juffrou.fx.business.ctrl;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-
 import org.juffrou.fx.business.dom.Contact;
 import org.juffrou.fx.controller.BeanController;
-import org.juffrou.fx.controller.model.BeanControllerModel;
+import org.juffrou.fx.controller.bind.Binder;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 public class ContactController extends BeanController<Contact> {
 	
@@ -23,10 +23,10 @@ public class ContactController extends BeanController<Contact> {
 		super(Contact.class);
 	}
 
-	public void bindControllerModel(BeanControllerModel<Contact> presentationModel) {
+	public void bindControllerModel(Binder binder) {
 
-		presentationModel.readWriteBind(description.textProperty(), "description");
-		presentationModel.readWriteBind(value.textProperty(), "value");
+		binder.addBidirectional(description.textProperty(), "description");
+		binder.addBidirectional(value.textProperty(), "value");
 	}
 	
 }

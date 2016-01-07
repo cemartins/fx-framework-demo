@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import org.juffrou.fx.business.dom.Contact;
 import org.juffrou.fx.controller.ControllerFactory;
 import org.juffrou.fx.controller.TableController;
-import org.juffrou.fx.controller.model.TableControllerModel;
+import org.juffrou.fx.controller.model.ListControllerModel;
 
 public class ContactTableController extends TableController<Contact> {
 	
@@ -34,7 +34,7 @@ public class ContactTableController extends TableController<Contact> {
 	}
 
 	
-	public void bindControllerModel(TableControllerModel<Contact> presentationModel) {
+	public void bindControllerModel(ListControllerModel<Contact> presentationModel) {
 
 		table.setItems(getControllerModel().getModelSource());
 	}

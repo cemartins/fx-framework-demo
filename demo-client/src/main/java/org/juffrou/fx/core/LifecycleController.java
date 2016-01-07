@@ -5,6 +5,7 @@ import java.net.URL;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 
 public class LifecycleController {
@@ -13,6 +14,11 @@ public class LifecycleController {
 	
 	@FXML
 	private AnchorPane nodeContainer;
+	
+	@FXML
+	private ToggleButton searchButton;
+	@FXML
+	private ToggleButton saveButton;
 
 	public static FXMLLoader getLoader() {
 		URL url = LifecycleController.class.getResource("/org/juffrou/fx/core/BeanLifecycle.fxml");
@@ -22,8 +28,16 @@ public class LifecycleController {
 	
 	@FXML
 	private void save() {
-		System.out.println("save");
-		presentationManager.save();
+		Object lifecycleModelSource = presentationManager.getLifecycleModelSource();
+		if(lifecycleModelSource == null) {
+			presentationManager.createNewTransient();;
+			saveButton.setText("Create New");
+		}
+		else {
+			System.out.println("save");
+			presentationManager.save();
+			saveButton.setText("Save");
+		}
 	}
 	
 	@FXML
@@ -34,7 +48,14 @@ public class LifecycleController {
 	
 	@FXML
 	private void search() {
-		presentationManager.search();
+		if(searchButton.isSelected()) {
+			presentationManager.createNewTransient();;
+			searchButton.setText("Execute Search");
+		}
+		else {
+			presentationManager.search();
+			searchButton.setText("Search");
+		}
 	}
 
 	public LifecyclePresentationManager getPresentationManager() {

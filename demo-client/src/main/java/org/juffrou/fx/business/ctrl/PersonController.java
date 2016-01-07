@@ -1,12 +1,12 @@
 package org.juffrou.fx.business.ctrl;
 
+import org.juffrou.fx.business.dom.Person;
+import org.juffrou.fx.controller.BeanController;
+import org.juffrou.fx.controller.bind.Binder;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-
-import org.juffrou.fx.business.dom.Person;
-import org.juffrou.fx.controller.BeanController;
-import org.juffrou.fx.controller.model.BeanControllerModel;
 
 public class PersonController extends BeanController<Person> {
 	
@@ -25,11 +25,11 @@ public class PersonController extends BeanController<Person> {
 		super(Person.class);
 	}
 
-	public void bindControllerModel(BeanControllerModel<Person> presentationModel) {
+	public void bindControllerModel(Binder binder) {
 
-		presentationModel.readWriteBind(name.textProperty(), "name");
-		presentationModel.readonlyBind(email.textProperty(), "email");
-		presentationModel.readWriteBind(dateOfBirth.valueProperty(), "dateOfBirth");
+		binder.addBidirectional(name.textProperty(), "name");
+		binder.addBidirectional(email.textProperty(), "email");
+		binder.addBidirectional(dateOfBirth.valueProperty(), "dateOfBirth");
 	}
 	
 }
