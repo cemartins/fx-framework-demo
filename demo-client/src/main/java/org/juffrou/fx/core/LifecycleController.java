@@ -30,7 +30,7 @@ public class LifecycleController {
 	private void save() {
 		Object lifecycleModelSource = presentationManager.getLifecycleModelSource();
 		if(lifecycleModelSource == null) {
-			presentationManager.createNewTransient();;
+			presentationManager.createNewTransient();
 			saveButton.setText("Create New");
 		}
 		else {
@@ -44,6 +44,7 @@ public class LifecycleController {
 	private void cancel() {
 		System.out.println("cancel");
 		presentationManager.cancel();
+		resetCommands();
 	}
 	
 	@FXML
@@ -56,6 +57,13 @@ public class LifecycleController {
 			presentationManager.search();
 			searchButton.setText("Search");
 		}
+	}
+	
+	private void resetCommands() {
+		saveButton.setSelected(false);
+		saveButton.setText("Save");
+		searchButton.setSelected(false);
+		searchButton.setText("Search");
 	}
 
 	public LifecyclePresentationManager getPresentationManager() {

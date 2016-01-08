@@ -144,10 +144,12 @@ public class PersonPM implements LifecyclePresentationManager<Person> {
 		itemNode.setVisible(true);
 	}
 	
-	public void setNewTransient() {
+	public void createNewTransient() {
 		Person person = new Person();
 		person.setContacts(new ArrayList<Contact>());
 		setLifecycleModelSource(person);
+		searchNode.setVisible(false);
+		itemNode.setVisible(true);
 	}
 	
 	
@@ -170,13 +172,9 @@ public class PersonPM implements LifecyclePresentationManager<Person> {
 		person.addContact(contact);
 		
 		setLifecycleModelSource(person);
+		searchNode.setVisible(false);
+		itemNode.setVisible(true);
 
-	}
-	
-	@Override
-	public void createNewTransient() {
-		Person person = new Person();
-		setLifecycleModelSource(person);
 	}
 	
 	@Override

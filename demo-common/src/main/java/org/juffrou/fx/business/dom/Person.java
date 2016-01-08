@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.juffrou.fx.serials.JFXSerializable;
@@ -32,6 +33,7 @@ public class Person implements JFXSerializable {
 	private LocalDate dateOfBirth;
 
 	@OneToMany(targetEntity = Contact.class, mappedBy = "person", fetch=FetchType.LAZY, orphanRemoval=true, cascade=CascadeType.ALL)
+	@OrderBy("id")
 	private List<Contact> contacts;
 	
 	
