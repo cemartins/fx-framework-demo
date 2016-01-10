@@ -3,67 +3,56 @@ package org.juffrou.fx.business.dal.support;
 import java.io.Serializable;
 import java.util.List;
 
-import net.sf.juffrou.reflect.JuffrouBeanWrapper;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
-import org.hibernate.Hibernate;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.juffrou.fx.business.dom.PersistableDomain;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public abstract class AbstractDaoImpl<T> {
+public abstract class AbstractDaoImpl<T extends PersistableDomain> {
 	
 	private final Class<T> tClass;
 	
-	@Autowired
-	private SessionFactory sessionFactory;
+	// Injected database connection:
+    @PersistenceContext 
+    private EntityManager em;
 
 	
 	protected AbstractDaoImpl(Class<T> tClass) {
 		this.tClass = tClass;
 	}
 	
-	private Session getCurrectSession() {
-		return sessionFactory.getCurrentSession();
-	}
-
 	public Serializable save(T domain) {
-		Serializable id = getCurrectSession().save(domain);
-		return id;
+		em.persist(domain);
+		return domain.getId();
 	}
 	
-	public void update(T domain) {
-		getCurrectSession().update(domain);
+	public void merge(T domain) {
+		em.merge(domain);
 	}
 	
 	public void delete(T domain) {
-		getCurrectSession().delete(domain);
+		em.remove(domain);
 	}
 	
 	public T load(Serializable id, String ... propertiesToInitialize) {
-		T domain = (T) getCurrectSession().load(tClass, id);
-		if(propertiesToInitialize != null && propertiesToInitialize.length > 0) {
-			JuffrouBeanWrapper bw = new JuffrouBeanWrapper(domain);
-			for(String propertyToInitialize : propertiesToInitialize) {
-				Hibernate.initialize(bw.getValue(propertyToInitialize));
-			}
-		}
+		T domain = (T) em.find(tClass, id);
 		return domain;
 	}
 	
 	public T get(Serializable id) {
-		T domain = (T) getCurrectSession().get(tClass, id);
+		T domain = (T) em.getReference(tClass, id);
 		return domain;
 	}
 	
 	public List<T> list(String query, Object...parameters) {
-		Query createQuery = getCurrectSession().createQuery(query);
+		TypedQuery<T> createQuery = em.createQuery(query, tClass);
 		if(parameters != null)
 			for(int i = 0; i<parameters.length; i++)
 				createQuery.setParameter(i, parameters[i]);
-		List<T> list = createQuery.list();
+		List<T> list = createQuery.getResultList();
 		return list;
 	}
 }

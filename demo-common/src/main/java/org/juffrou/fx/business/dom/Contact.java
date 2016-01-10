@@ -12,7 +12,7 @@ import org.juffrou.fx.serials.JFXSerializable;
 
 @Entity
 @Table(name="Contact")
-public class Contact implements JFXSerializable {
+public class Contact implements JFXSerializable, PersistableDomain {
 
 	private static final long serialVersionUID = -1927971714182915038L;
 	

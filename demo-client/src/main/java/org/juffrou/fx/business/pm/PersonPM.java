@@ -116,7 +116,7 @@ public class PersonPM implements LifecyclePresentationManager<Person> {
 		if(id == null)
 			id = personManager.save(person);
 		else
-			personManager.update(person);
+			personManager.merge(person);
 
 		System.out.println("saved person");
 

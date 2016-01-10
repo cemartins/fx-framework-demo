@@ -5,12 +5,13 @@ import java.util.List;
 
 import org.juffrou.fx.business.bll.AbstractManager;
 import org.juffrou.fx.business.dal.support.AbstractDaoImpl;
+import org.juffrou.fx.business.dom.PersistableDomain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-public abstract class AbstractManagerImpl<T> implements AbstractManager<T>{
+public abstract class AbstractManagerImpl<T extends PersistableDomain> implements AbstractManager<T>{
 
 	@Autowired
 	private AbstractDaoImpl<T> daoImpl;
@@ -22,8 +23,8 @@ public abstract class AbstractManagerImpl<T> implements AbstractManager<T>{
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED)
-	public void update(T domain) {
-		daoImpl.update(domain);
+	public void merge(T domain) {
+		daoImpl.merge(domain);
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED)

@@ -1,7 +1,5 @@
 package org.juffrou.fx.business.dom;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,7 +15,7 @@ import javax.persistence.ManyToOne;
  *
  */
 @Entity
-public class AudioCd implements Serializable {
+public class AudioCd implements PersistableDomain {
 
 	private static final long serialVersionUID = 4665837089141365794L;
 

@@ -7,7 +7,7 @@ public interface AbstractManager<T> {
 
 	public Serializable save(T domain);
 	
-	public void update(T domain);
+	public void merge(T domain);
 	
 	public void delete(T domain);
 	

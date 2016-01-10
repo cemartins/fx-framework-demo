@@ -1,6 +1,5 @@
 package org.juffrou.fx.business.dom;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import javax.persistence.OneToMany;
 /**
  */
 @Entity
-public class MusicCollection implements Serializable {
+public class MusicCollection implements PersistableDomain {
 
 	private static final long serialVersionUID = -4842790705131368523L;
 	

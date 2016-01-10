@@ -1,6 +1,5 @@
 package org.juffrou.fx.business.dom;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -10,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class DiscoPerson implements Serializable {
+public class DiscoPerson implements PersistableDomain {
 
 	private static final long serialVersionUID = -7969309518311916608L;
 	
