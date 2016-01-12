@@ -1,8 +1,10 @@
 package org.juffrou.fx.business.dom;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,10 +19,10 @@ public class Contact implements JFXSerializable, PersistableDomain {
 	private static final long serialVersionUID = -1927971714182915038L;
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	@ManyToOne(optional = true, fetch= FetchType.LAZY)
+	@ManyToOne(optional=false, fetch=FetchType.LAZY, cascade={CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name="person_id")
 	private Person person;
 

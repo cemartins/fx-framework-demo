@@ -6,14 +6,17 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
+import org.juffrou.fx.business.jpa.LocalDateAttributeConverter;
 import org.juffrou.fx.serials.JFXSerializable;
 
 @Entity
@@ -23,17 +26,18 @@ public class Person implements JFXSerializable, PersistableDomain {
 	private static final long serialVersionUID = -6807947635627328530L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 
 	private String name;
 	private String email;
 
 	@Column()
+	@Convert(converter = LocalDateAttributeConverter.class)
 	private LocalDate dateOfBirth;
 
 	@OneToMany(targetEntity = Contact.class, mappedBy = "person", fetch=FetchType.LAZY, orphanRemoval=true, cascade=CascadeType.ALL)
-	@OrderBy("id")
+	@OrderColumn(name="id")
 	private List<Contact> contacts;
 	
 	
