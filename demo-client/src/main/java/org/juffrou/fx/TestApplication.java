@@ -23,7 +23,7 @@ public class TestApplication extends Application {
 
     private static final String SERVER_URL_PARAMETER="server-url";
     private static final String SERVICES_URL="SERVICES_URL";
-    private static final String SERVER_URL="http://localhost:8080/fxframework-demo/remoting";
+    private static final String SERVER_URL="http://localhost:8090/fxframework-demo/remoting";
     
     private ApplicationContext context = null;
 	

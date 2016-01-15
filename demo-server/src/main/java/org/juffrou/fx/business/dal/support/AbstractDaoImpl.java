@@ -1,10 +1,14 @@
 package org.juffrou.fx.business.dal.support;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Subgraph;
 import javax.persistence.TypedQuery;
 
 import org.juffrou.fx.business.dom.PersistableDomain;
@@ -38,7 +42,18 @@ public abstract class AbstractDaoImpl<T extends PersistableDomain> {
 	}
 	
 	public T load(Serializable id, String ... propertiesToInitialize) {
-		T domain = (T) em.find(tClass, id);
+		
+		Map<String, Object> hints = null;
+		
+		if(propertiesToInitialize != null) {
+			hints = new HashMap<>();
+			EntityGraph<T> graph = em.createEntityGraph(tClass);
+			for(String path : propertiesToInitialize) {
+				Subgraph<Object> itemGraph = graph.addSubgraph(path);
+			}
+		}
+		
+		T domain = (T) em.find(tClass, id, hints);
 		return domain;
 	}
 	

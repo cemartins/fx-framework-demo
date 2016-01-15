@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
@@ -37,7 +38,7 @@ public class Person implements JFXSerializable, PersistableDomain {
 	private LocalDate dateOfBirth;
 
 	@OneToMany(targetEntity = Contact.class, mappedBy = "person", fetch=FetchType.LAZY, orphanRemoval=true, cascade=CascadeType.ALL)
-	@OrderColumn(name="id")
+	@OrderBy("description")
 	private List<Contact> contacts;
 	
 	
