@@ -32,17 +32,17 @@ public abstract class AbstractManagerImpl<T extends PersistableDomain> implement
 		daoImpl.delete(domain);
 	}
 	
-	@Transactional(readOnly=true, isolation=Isolation.READ_COMMITTED, propagation=Propagation.REQUIRED)
+	@Transactional(readOnly=true, isolation=Isolation.DEFAULT, propagation=Propagation.REQUIRED)
 	public T load(Serializable id, String...propertiesToInitialize) {
 		return daoImpl.load(id, propertiesToInitialize);
 	}
 
-	@Transactional(readOnly=true, isolation=Isolation.READ_COMMITTED, propagation=Propagation.REQUIRED)
+	@Transactional(readOnly=true, isolation=Isolation.DEFAULT, propagation=Propagation.REQUIRED)
 	public T get(Serializable id) {
 		return daoImpl.get(id);
 	}
 	
-	@Transactional(readOnly=true, isolation=Isolation.READ_COMMITTED, propagation=Propagation.REQUIRED)
+	@Transactional(readOnly=true, isolation=Isolation.DEFAULT, propagation=Propagation.REQUIRED)
 	public List<T> get(String query, Object...parameters) {
 		return daoImpl.list(query, parameters);
 	}
