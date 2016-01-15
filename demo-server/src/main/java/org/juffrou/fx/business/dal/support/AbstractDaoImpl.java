@@ -51,6 +51,7 @@ public abstract class AbstractDaoImpl<T extends PersistableDomain> {
 			for(String path : propertiesToInitialize) {
 				Subgraph<Object> itemGraph = graph.addSubgraph(path);
 			}
+			hints.put("javax.persistence.loadgraph", graph);
 		}
 		
 		T domain = (T) em.find(tClass, id, hints);
